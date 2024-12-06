@@ -40,6 +40,13 @@ async function run() {
 
     const gameCollection = client.db('gameDB').collection('game');
 
+    app.get('/game', async(req, res) => {
+      const  cursor = gameCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
     app.post('/game', async (req, res) => {
       const newGame = req.body;
       console.log(newGame);
