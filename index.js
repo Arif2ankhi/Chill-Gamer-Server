@@ -39,6 +39,7 @@ async function run() {
     await client.connect();
 
     const gameCollection = client.db('gameDB').collection('game');
+    const reviewCollection = client.db('gameDB').collection('reviews');
 
     app.get('/game', async(req, res) => {
       const  cursor = gameCollection.find();
@@ -54,6 +55,37 @@ async function run() {
       res.send(result);
 
     })
+
+
+
+    // review related apis
+
+    app.post('/reviews', async(req, res) => {
+      console.log('POST /reviews called', req.body);
+      const newReview = req.body;
+      console.log('create new review', newReview);
+      const result = await reviewCollection.insertOne(newReview);
+      res.send(result);
+    })
+
+    // app.post('/reviews', async (req, res) => {
+    //   try {
+    //     const newReview = req.body;
+    //     console.log('Received review data:', newReview);
+    
+    //     // Insert the review into the database
+    //     const result = await reviewCollection.insertOne(newReview);
+    
+    //     // Send a success response
+    //     res.status(200).json({ success: true, result });
+    //   } catch (error) {
+    //     console.error('Error saving review:', error);
+    //     res.status(500).json({ success: false, error: 'Internal Server Error' });
+    //   }
+    // });
+    
+
+
 
 
 
