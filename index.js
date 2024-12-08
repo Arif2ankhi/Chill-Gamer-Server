@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -13,9 +13,6 @@ app.use(express.json());
 
 // chillGamer
 // 5DaiOscr0eTVnqNf
-
-
-
 
 
 
@@ -56,9 +53,49 @@ async function run() {
 
     })
 
+    
 
 
-    // review related apis
+
+    app.get('/reviews', async(req, res) => {
+      const cursor = reviewCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+    // get update and delete in
+
+    app.get("/reviews", async (req, res) => {
+      const email = req.query.email;
+      const query = { reviewerEmail: email };
+      const reviews = await reviewCollection.find(query).toArray();
+      res.send(reviews);
+    });
+
+    // // update 
+
+    app.put("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedReview = req.body;
+      const result = await reviewCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updatedReview }
+      );
+      res.send(result);
+    });
+
+
+    // delete
+    app.delete("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      // const result = await reviewCollection.deleteOne({ _id: new ObjectId(id) });
+      const query = { _id: new ObjectId(id) };
+      const result = await reviewCollection.deleteOne(query);
+      res.send(result);
+    });
+    
+
 
     app.post('/reviews', async(req, res) => {
       console.log('POST /reviews called', req.body);
@@ -68,27 +105,28 @@ async function run() {
       res.send(result);
     })
 
-    // app.post('/reviews', async (req, res) => {
-    //   try {
-    //     const newReview = req.body;
-    //     console.log('Received review data:', newReview);
+
+// Update form
+
+app.put("/reviews/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedReview = req.body;
+
+  try {
+    const result = await reviewsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedReview }
+    );
+    res.send(result);
+  } catch (err) {
+    console.error("Error updating review:", err);
+    res.status(500).send({ message: "Failed to update review" });
+  }
+});
+
+
+
     
-    //     // Insert the review into the database
-    //     const result = await reviewCollection.insertOne(newReview);
-    
-    //     // Send a success response
-    //     res.status(200).json({ success: true, result });
-    //   } catch (error) {
-    //     console.error('Error saving review:', error);
-    //     res.status(500).json({ success: false, error: 'Internal Server Error' });
-    //   }
-    // });
-    
-
-
-
-
-
 
 
     // Send a ping to confirm a successful connection
@@ -112,3 +150,4 @@ app.get('/',(req, res) => {
 app.listen(port, () =>  {
     console.log(`Chill Gamer server is running on port: ${port}`);
 })
+
