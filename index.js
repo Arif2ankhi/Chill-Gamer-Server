@@ -1,4 +1,6 @@
 
+
+
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -93,26 +95,6 @@ async function run() {
       res.send(result);
      });
 
-    // Update patch Apis
-    
-    // app.patch("/reviews", async (req, res) => {
-    //   const  email = req.body.email;
-    //   const filter = {email};
-    //   const updatedReview = {
-    //     $set: {
-         
-    //       reviewText: req.body?.reviewText,
-          
-         
-    //     }
-    //   }
-    //   const result = await reviewCollection.updateOne(filter, updatedReview);
-    //   res.send(result);
-    // })
-
-    // latest update 
-
-    // app.patch("/reviews/:id", async (req, res) => {
     
 
 
@@ -168,4 +150,3 @@ app.get('/',(req, res) => {
 app.listen(port, () =>  {
     console.log(`Chill Gamer server is running on port: ${port}`);
 })
-
