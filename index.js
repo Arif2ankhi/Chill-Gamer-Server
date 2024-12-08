@@ -53,9 +53,7 @@ async function run() {
 
     })
 
-    
-
-
+  
 
     app.get('/reviews', async(req, res) => {
       const cursor = reviewCollection.find();
@@ -93,7 +91,28 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await reviewCollection.deleteOne(query);
       res.send(result);
-    });
+     });
+
+    // Update patch Apis
+    
+    // app.patch("/reviews", async (req, res) => {
+    //   const  email = req.body.email;
+    //   const filter = {email};
+    //   const updatedReview = {
+    //     $set: {
+         
+    //       reviewText: req.body?.reviewText,
+          
+         
+    //     }
+    //   }
+    //   const result = await reviewCollection.updateOne(filter, updatedReview);
+    //   res.send(result);
+    // })
+
+    // latest update 
+
+    // app.patch("/reviews/:id", async (req, res) => {
     
 
 
@@ -108,9 +127,21 @@ async function run() {
 
 // Update form
 
+// LATEST UPDATE
+
+
+
 app.put("/reviews/:id", async (req, res) => {
-  const { id } = req.params;
-  const updatedReview = req.body;
+  const  id  = req.params.id;
+  const filter = {_id: new ObjectId(id)};
+  const options = {upsert:true}
+  const updatedReview ={
+    $set :
+  }
+
+
+
+  // const updatedReview = req.body;
 
   try {
     const result = await reviewsCollection.updateOne(
