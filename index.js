@@ -129,19 +129,9 @@ async function run() {
 
 // LATEST UPDATE
 
-
-
 app.put("/reviews/:id", async (req, res) => {
-  const  id  = req.params.id;
-  const filter = {_id: new ObjectId(id)};
-  const options = {upsert:true}
-  const updatedReview ={
-    $set :
-  }
-
-
-
-  // const updatedReview = req.body;
+  const { id } = req.params;
+  const updatedReview = req.body;
 
   try {
     const result = await reviewsCollection.updateOne(
@@ -155,9 +145,6 @@ app.put("/reviews/:id", async (req, res) => {
   }
 });
 
-
-
-    
 
 
     // Send a ping to confirm a successful connection
